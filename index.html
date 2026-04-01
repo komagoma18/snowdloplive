@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNOWDLOP 1st Arena Live "first drop" 特設サイト</title>
+    <style>
+        /* カラー・基本設定 */
+        :root {
+            --bg-color: #000510;
+            --keiichi-color: #d3d3d3; /* Platinum Gray */
+            --asana-color: #6551A1;   /* Iris Purple */
+            --text-color: #ffffff;
+            --sub-text-color: #aaaaaa;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; transition: 0.3s; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        section { padding: 80px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+        h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+            letter-spacing: 0.3rem;
+            font-weight: 200;
+            text-transform: uppercase;
+        }
+
+        /* 1. ヒーローセクション */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #0a1a30 0%, #000510 100%);
+        }
+        .logo-area { width: 280px; margin-bottom: 20px; }
+        .logo-area img { width: 100%; height: auto; }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin: 10px 0;
+            background: linear-gradient(to right, var(--keiichi-color), var(--asana-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 200;
+            letter-spacing: 0.1rem;
+        }
+        .hero p { letter-spacing: 0.4rem; color: var(--sub-text-color); font-size: 0.9rem; }
+
+        /* 2. チケット情報 */
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+        }
+        .sold-out {
+            display: inline-block;
+            color: #ff5252;
+            border: 2px solid #ff5252;
+            padding: 10px 30px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            transform: rotate(-3deg);
+        }
+
+        /* 3. アーティストセクション */
+        .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .profile-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 30px;
+            border-radius: 15px;
+            border-top: 4px solid;
+            transition: 0.3s;
+        }
+        .p-keiichi { border-color: var(--keiichi-color); }
+        .p-asana { border-color: var(--asana-color); }
+        .profile-img { width: 100%; aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; margin-bottom: 20px; background: #111; }
+        .profile-img img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-desc { font-size: 0.9rem; margin-bottom: 20px; }
+        .color-label { font-size: 0.8rem; color: var(--sub-text-color); margin-bottom: 10px; display: block; }
+        .comment-box {
+            margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.05);
+            border-radius: 8px; font-style: italic; font-size: 0.95rem; position: relative;
+        }
+        .comment-box::before { content: "“"; font-size: 2rem; position: absolute; top: -5px; left: 5px; opacity: 0.3; }
+
+        /* 4. SPECIAL CONTENT (FC限定) */
+        .special-content { text-align: center; }
+        .diff-grid { display: flex; justify-content: center; gap: 60px; margin-top: 40px; }
+        .diff-item { width: 220px; cursor: pointer; position: relative; transition: 0.4s; }
+        .diff-item img { width: 100%; height: auto; filter: grayscale(0.5) brightness(0.7); border-radius: 10px; }
+        .diff-item:hover img { filter: grayscale(0) brightness(1.1); transform: translateY(-10px); }
+        .fc-badge { position: absolute; top: 10px; right: 10px; background: var(--asana-color); color: #fff; padding: 4px 12px; font-size: 0.7rem; font-weight: bold; border-radius: 20px; z-index: 2; }
+
+        /* 5. LIVE ARCHIVE  */
+        .main-video-view {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+        }
+        .main-video-view img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .main-video-view:hover img {
+            transform: scale(1.05);
+            opacity: 0.7;
+        }
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            background: rgba(211, 211, 211, 0.9); /* 灰色：Platinum Gray */
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .main-video-view:hover .play-overlay {
+            opacity: 1;
+        }
+        #video-title {
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            margin: 0;
+            text-align: center;
+            font-weight: bold;
+            color: var(--keiichi-color);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .thumb-list {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        .thumb-item {
+            flex: 0 0 160px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.3s;
+            opacity: 0.5;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .thumb-item img {
+            width: 100%;
+            display: block;
+        }
+        .thumb-item:hover, .thumb-item.active {
+            opacity: 1;
+            border-color: var(--asana-color);
+            box-shadow: 0 0 15px var(--asana-color);
+        }
+
+        /* 6. 注意書き */
+        .attention-section { background: rgba(255, 82, 82, 0.03); border: 1px solid rgba(255, 82, 82, 0.2); padding: 40px; margin: 60px auto; border-radius: 15px; text-align: center; }
+        .attention-section b { color: #ff5252; font-size: 1.1rem; }
+        .author-info a { color: var(--asana-color); text-decoration: underline; margin: 0 15px; font-weight: bold; }
+
+        footer { padding: 50px 0; text-align: center; background: #000; font-size: 0.8rem; color: #666; letter-spacing: 0.1rem; }
+
+        @media (max-width: 768px) { .profile-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } .diff-grid { gap: 20px; } .diff-item { width: 45%; } .thumb-item { flex: 0 0 120px; } }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="logo-area"><img src="logo.png" alt="SNOWDLOP LOGO"></div>
+        <p>SNOWDLOP 1st Arena Live</p>
+        <h1>"first drop"</h1>
+    </header>
+
+    <div class="container">
+
+        <section id="info">
+            <h2>TICKET & INFO</h2>
+            <div class="info-card">
+                <h3 style="font-size: 1.5rem; color: var(--keiichi-color); font-weight: 300;">SNOWDLOP 1st Arena Live "first drop"</h3>
+                <p><strong>DATE:</strong> 2226年12月24日（木）</p>
+                <p><strong>TIME:</strong> 開場 17:00 / 開演 18:30</p>
+                <p><strong>PLACE:</strong> ブルーバードアリーナ</p>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 20px 0;">
+                <p>プレミアムS席（特典付）：12,000円</p>
+                <p>一般指定席：7,500円</p>
+                <div class="sold-out">SOLD OUT</div>
+                <p style="margin-top:15px; font-size: 0.8rem; opacity: 0.6;">※当日券の販売予定はございません。</p>
+            </div>
+        </section>
+        
+        <section id="artist">
+            <h2>ARTIST</h2>
+            <div class="profile-grid">
+                <div class="profile-item p-keiichi">
+                    <div class="profile-img"><img src="keiichi.png" alt="氷晶 珪壱"></div>
+                    <h3 style="color: var(--keiichi-color); margin-bottom: 5px;">氷晶 珪壱 <small style="color: #fff; opacity: 0.5;">(歌唱.)</small></h3>
+                    <span class="color-label">● Color: Platinum Gray</span>
+                    <p class="profile-desc">SNOWDLOPのボーカル。歌唱力はもちろんのこと、圧倒的なビジュアルから特に女性人気が高い。普段はクールな立ち回りだが、マイクを握れば熱く歌い上げる。</p>
+                    
+                </div>
+                <div class="profile-item p-asana">
+                    <div class="profile-img"><img src="asana.png" alt="東雲 あさな"></div>
+                    <h3 style="color: var(--asana-color); margin-bottom: 5px;">東雲 あさな <small style="color: #fff; opacity: 0.5;">(作詞作曲.)</small></h3>
+                    <span class="color-label">● Color: Iris Purple</span>
+                    <p class="profile-desc">SNOWDLOPの作詞作曲担当。音楽の才能に満ち溢れており、SNOWDLOPの楽曲はすべて彼が制作している。気さくな性格で相手を楽しませることが好き。</p>
+            
+                </div>
+            </div>
+        </section>
+
+        <section id="special" class="special-content">
+            <h2>SPECIAL CONTENT</h2>
+            <p style="color: var(--sub-text-color);">メンバーによるライブ直前独占インタビュー</p>
+            <div class="diff-grid">
+                <div class="diff-item" onclick="showFcAlert('氷晶 珪壱')">
+                    <div class="fc-badge">FC ONLY</div>
+                    <img src="keiichi_diff.png" alt="Keiichi Interview">
+                    <p style="margin-top: 15px; font-weight: bold; color: var(--keiichi-color);">Keiichi's Blog</p>
+                </div>
+                <div class="diff-item" onclick="showFcAlert('東雲 あさな')">
+                    <div class="fc-badge">FC ONLY</div>
+                    <img src="asana_diff.png" alt="Asana Interview">
+                    <p style="margin-top: 15px; font-weight: bold; color: var(--asana-color);">Asana's Note</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="archive">
+            <h2>LIVE ARCHIVE</h2>
+            <div class="main-video-view">
+                <a id="main-link" href="https://www.youtube.com/watch?v=1zJtDXheaH4" target="_blank">
+                    <div class="play-overlay">▶ PLAY</div>
+                    <img id="main-img" src="https://img.youtube.com/vi/1zJtDXheaH4/maxresdefault.jpg" alt="Main Preview">
+                </a>
+                <p id="video-title">【CoC】「すみません、よくわかりません。」</p>
+            </div>
+
+            <div class="thumb-list">
+                <div class="thumb-item active" onclick="switchMain('1zJtDXheaH4', '【CoC】「すみません、よくわかりません。」', this)">
+                    <img src="https://img.youtube.com/vi/1zJtDXheaH4/mqdefault.jpg" alt="Video 1">
+                </div>
+                <div class="thumb-item" onclick="switchMain('nfzE6kQaowI', '【クトゥルフ神話TRPG】終夜', this)">
+                    <img src="https://img.youtube.com/vi/nfzE6kQaowI/mqdefault.jpg" alt="Video 2">
+                </div>
+                <div class="thumb-item" onclick="switchMain('ydw9th5lAlI', '【高生卓】NOISY NOTE', this)">
+                    <img src="https://img.youtube.com/vi/ydw9th5lAlI/mqdefault.jpg" alt="Video 3">
+                </div>
+                <div class="thumb-item" onclick="switchMain('VfnHVV4nwUM', '【クトゥルフ神話TRPG】メイフラワーの咲く森で', this)">
+                    <img src="https://img.youtube.com/vi/VfnHVV4nwUM/mqdefault.jpg" alt="Video 4">
+                </div>
+            </div>
+        </section>
+
+        <div class="attention-section">
+            <p>このサイトはエイプリルフールのためにファンが作成したものです。</p>
+            <p><b>ご本人様への問い合わせ等は絶対に行わないようお願いいたします。</b></p>
+            <div class="author-info">
+                <p>何か不備などございましたら作者Twitter(X)アカウントへご連絡ください。</p>
+                作者Twitter：
+                <a href="https://twitter.com/koma_goma18" target="_blank">本垢@koma_goma18</a>
+                <a href="https://twitter.com/koma_goma_fu" target="_blank">高生宅垢@koma_goma_fu</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Snowdrop Project / Produced by Komagomafu</p>
+    </footer>
+
+    <script>
+        function showFcAlert(memberName) {
+            alert("【" + memberName + " 会員限定コンテンツ】\n\nこの先の記事を閲覧するには、SNOWDLOP公式ファンクラブへのログインが必要です。");
+        }
+        function switchMain(videoId, title, element) {
+            const mainImg = document.getElementById('main-img');
+            const mainLink = document.getElementById('main-link');
+            const titleText = document.getElementById('video-title');
+            mainImg.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+            mainLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+            titleText.innerText = title;
+            const thumbs = document.querySelectorAll('.thumb-item');
+            thumbs.forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+        }
+    </script>
+</body>
+</html>
